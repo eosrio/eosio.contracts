@@ -15,9 +15,9 @@ else
     export DOCKER_IMAGE
 fi
 ARGS=${ARGS:-"--rm -v $(pwd):$MOUNTED_DIR"}
-CDT_COMMANDS="apt-get install -y wget && wget -q $CDT_URL -O eosio.cdt.deb && dpkg -i eosio.cdt.deb && export PATH=/usr/opt/eosio.cdt/\\\$(ls /usr/opt/eosio.cdt/)/bin:\\\$PATH"
+CDT_COMMANDS="apt-get install -y wget && wget -q $CDT_URL -O eosio.cdt.deb && dpkg -i eosio.cdt.deb && export PATH=/usr/opt/eosio.cdt/$CDT_VERSION/bin:\\\$PATH"
 PRE_COMMANDS="$CDT_COMMANDS && cd $MOUNTED_DIR/build"
-BUILD_COMMANDS="cmake -DBUILD_TESTS=true .. && make -j $JOBS"
+BUILD_COMMANDS="cmake .. && make -j $JOBS"
 COMMANDS="$PRE_COMMANDS && $BUILD_COMMANDS"
 # retry docker pull to protect against failures due to race conditions with eosio pipeline
 INDEX='1'
@@ -31,5 +31,4 @@ while [[ "$(docker pull $DOCKER_IMAGE 2>&1 | grep -ice "manifest for $DOCKER_IMA
     sleep 60
 done
 # run
-echo "docker run $ARGS $(buildkite-intrinsics) $DOCKER_IMAGE bash -c \"$COMMANDS\""
 eval docker run $ARGS $(buildkite-intrinsics) $DOCKER_IMAGE bash -c \"$COMMANDS\"

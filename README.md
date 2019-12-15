@@ -1,6 +1,6 @@
 # eosio.contracts
 
-## Version : 1.8.2
+## Version : 1.7.1
 
 The design of the EOSIO blockchain calls for a number of smart contracts that are run at a privileged permission level in order to support functions such as block producer registration and voting, token staking for CPU and network bandwidth, RAM purchasing, multi-sig, etc.  These smart contracts are referred to as the bios, system, msig, wrap (formerly known as sudo) and token contracts.
 
@@ -15,10 +15,18 @@ The following unprivileged contract(s) are also part of the system.
    * [eosio.token](./contracts/eosio.token)
 
 Dependencies:
+* [eosio v1.8.x](https://github.com/EOSIO/eos/releases/tag/v1.8.6)
 * [eosio.cdt v1.6.x](https://github.com/EOSIO/eosio.cdt/releases/tag/v1.6.3)
-* [eosio v1.8.x](https://github.com/EOSIO/eos/releases/tag/v1.8.6) (optional dependency only needed to build unit tests)
 
-To build the contracts follow the instructions in [`Build and deploy` section](./docs/02_build-and-deploy.md).
+To build the contracts and the unit tests:
+* First, ensure that your __eosio__ is compiled to the core symbol for the EOSIO blockchain that intend to deploy to.
+* Second, make sure that you have ```sudo make install```ed __eosio__.
+* Then just run the ```build.sh``` in the top directory to build all the contracts and the unit tests for these contracts.
+
+After build:
+* The unit tests executable is placed in the _build/tests_ and is named __unit_test__.
+* The contracts are built into a _bin/\<contract name\>_ folder in their respective directories.
+* Finally, simply use __cleos__ to _set contract_ by pointing to the previously mentioned directory.
 
 ## Contributing
 
